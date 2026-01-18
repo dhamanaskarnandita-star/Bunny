@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smit & Nan: The Vault 🐰</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        :root { --sky: #D0E8FF; --grass: #B2F2BB; --pink: #FFC0CB; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Varela Round', sans-serif; overflow: hidden; background: var(--sky); }
+        .world { position: relative; height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .grass { position: absolute; bottom: 0; width: 100%; height: 150px; background: var(--grass); border-top: 10px solid #8ce99a; z-index: 2; cursor: crosshair; }
+        .avatars { position: absolute; bottom: 100px; display: flex; gap: 40px; z-index: 5; }
+        .character { position: relative; width: 60px; height: 90px; }
+        .smit .head { width: 40px; height: 40px; background: #FFDBAC; border-radius: 5px; position: relative; margin: 0 auto; }
+        .smit .bangs { position: absolute; top: 0; width: 100%; height: 15px; background: #000; border-radius: 5px 5px 0 0; }
+        .smit .specs { position: absolute; top: 18px; left: 5px; width: 30px; height: 10px; border: 2px solid #000; border-top: none; }
+        .smit .hoodie { width: 50px; height: 50px; background: #222; border-radius: 10px 10px 0 0; margin: -5px auto; }
+        .nan .hair { position: absolute; top: 0; left: -5px; width: 50px; height: 130px; background: #000; border-radius: 20px; }
+        .nan .head { width: 40px; height: 40px; background: #FFDBAC; border-radius: 5px; position: relative; margin: 0 auto; z-index: 2; }
+        .nan .jhumka { position: absolute; top: 25px; width: 6px; height: 6px; background: gold; border-radius: 50%; }
+        .nan .kurti { width: 46px; height: 60px; background: #111; border-top: 2px solid #eee; margin: -5px auto; position: relative; z-index: 1; }
+        .note { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 0 rgba(0,0,0,0.05); width: 85%; max-width: 400px; text-align: center; z-index: 10; margin-top: 40px; border: 4px solid #f0f0f0; }
+        .shawarma { position: absolute; top: -50px; animation: fall linear infinite; z-index: 1; pointer-events: none; font-size: 24px; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        .floating-pop { position: absolute; pointer-events: none; animation: popUp 1s ease-out forwards; z-index: 3; font-size: 20px; }
+        @keyframes popUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-70px); } }
+        .btn { background: #ff85a2; color: white; border: none; padding: 12px 24px; border-radius: 50px; font-family: 'Fredoka One'; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 0 #e6738c; }
+        #bunny-trigger { position: fixed; bottom: 10px; right: 10px; font-size: 2rem; opacity: 0.2; z-index: 1000; cursor: pointer; padding: 10px; }
+        #secret-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff0f3; z-index: 9999; overflow-y: auto; padding: 40px 20px; text-align: center; color: #d63384; }
+        .music-btn { position: fixed; top: 15px; right: 15px; background: white; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; z-index: 100; box-shadow: 0 4px 0 #ddd; }
+    </style>
+</head>
+<body onclick="handleGlobalClick(event)">
+
+<div class="music-btn" onclick="toggleMusic()">🎵</div>
+<audio id="lofi" loop src="https://www.chosic.com/wp-content/uploads/2021/07/Rainy-Day-Lofi-Chill-Melody.mp3"></audio>
+
+<div class="world">
+    <div class="note">
+        <h1 style="color:#ff85a2; margin:0; font-family:'Fredoka One';">Smit's Vibe Vault ✨</h1>
+        <p id="vibe-display" style="min-height:85px; color:#444; display:flex; align-items:center; justify-content:center;">Click the button, Best CR! 🌯</p>
+        <button class="btn" onclick="nextVibe()">Next Vibe, Shona!</button>
+    </div>
+    <div class="avatars">
+        <div class="character smit">
+            <div class="head"><div class="bangs"></div><div class="specs"></div></div>
+            <div class="hoodie"></div>
+        </div>
+        <div class="character nan">
+            <div class="hair"></div>
+            <div class="head"><div class="jhumka" style="left:-2px"></div><div class="jhumka" style="right:-2px"></div></div>
+            <div class="kurti"></div>
+        </div>
+    </div>
+    <div class="grass"></div>
+</div>
+
+<div id="bunny-trigger" onclick="countBunny()">🐰</div>
+
+<div id="secret-overlay" onclick="this.style.display='none'">
+    <h2 style="font-family:'Fredoka One'">To my sweet gulabjaam 💗</h2>
+    <p style="font-style:italic; line-height:1.8; max-width:500px; margin:auto; white-space: pre-wrap;">
+        nothing makes u unlovable bunny,ive been so happy since you came in my life i will always love you no matter what even i cant help myself falling everytime,you are special veryyyy special just like shawarma seems special to you, i will always lovee you,your walk,your style,your smile,laugh,voice,everything everything everything!!!! My heart always worship you and your soul, my eyes will always enjoy watching your recommended movies and i dont know if our friendship will ever be converted into relationship but i will always be grateful for having you as a close friend, i hate it when you feel embarrassed because i make something for u but its my love language i cant help it 😭 as you said let future decide what will happen between us, I'll always wait for your decision and will always have oceans and galaxies of love your you bunny 💖💗🎀💞💓
+
+        <strong>- From your fav junior nan 😒</strong>
+    </p>
+</div>
+
+<script>
+    const vibes = [
+        "Sujay says: 'Smit, schedule follow kar!' But we know you're busy being the best CR. 📖",
+        "Aashu logic: If the question is hard, just smile and say 'Koni tari yenar yenar ga!' 🎶",
+        "Meenal style: Drama nako, focus on the paper! Then we celebrate. 💅",
+        "Kaivalya: 'Boards are easy, even Bunny can do it!' (He knows you're a genius). 🎸",
+        "Reshma’s advice: Eat your gulabjaam, it’s good for the brain! 🍬",
+        "Anna is watching! No cheating, only CR excellence. 👮‍♂️",
+        "3BHK vibe: Friendship is the only subject you've already topped. 🏠",
+        "Smit, life is short. 'Haso, jiyo, muskurao... kya pata Kal Ho Naa Ho.' 🌟",
+        "SRK says: 'Haar kar jeetne wale ko Smit (Baazigar) kehte hain!' 🎬",
+        "Rahul... naam toh suna hoga? But Smit... the name everyone trusts! 🌹",
+        "Main hoon na! Don't worry about the results, Bunny. ✋",
+        "Love, life, and Shawarma—the SRK trilogy. 🌯",
+        "Kehte hain agar kisi cheez ko dil se chaho... toh puri kainaat use boards pass karwane mein lag jaati hai! ✨",
+        "Waku Waku! Anya thinks Bunny is the coolest CR in the galaxy! 🥜",
+        "Raven: 'I don't do good luck... but for Smit, I'll make an exception.' 💜",
+        "Po: The secret ingredient to your success is... YOU. 🐼",
+        "Coco: Remember me... even when you're a big University star. 🎸",
+        "Mickey: 'Hot dog, hot dog, hot diggity dog!' You’re doing great, Shona! 🐭",
+        "Secret Life of Pets: We know you're looking at memes, Bunny! 🐶",
+        "Dracula: You’re the 'Zing' of our friendship group! 🧛‍♂️",
+        "Ti Sadhya Kay Karte? She's making a web app for her favorite Bunny! 💻",
+        "Kakan vibe: Some bonds are meant to last across lifetimes. 🕯️",
+        "Anuraag and Tanvi would be jealous of our friendship, Smit. 🌸",
+        "Gemini Analysis: Leadership levels at 100%. CR status: Legendary. 🤖",
+        "AI Prediction: A bright future, lots of shawarma, and endless smiles for Smit. 📈",
+        "Google Gemini: 'I might be an AI, but even I can see Bunny is special.' ✨",
+        "CR Duty: Managing the class is hard, being this cute is harder! 🎓",
+        "Smit, don't get embarrassed! It’s just your favorite junior being extra. 😒",
+        "Bunny status: 🐰 (Currently in 'Study Mode'—please do not disturb unless you have 🌯).",
+        "Shona, you're more than enough. Even when you don't believe it. 💖",
+        "Ocean and galaxies of love... but currently, let's pass Boards! 🌌",
+        "The best CR award goes to... *drumroll* ... Smit! 🏆",
+        "Aashu's innocence + Sujay's brains + Bunny's style = Perfection. ✨",
+        "Don't let the 3BHK drama distract you, Bunny. You're the star! 🌟",
+        "Smit, your style is more iconic than SRK's open arms pose. 🙌",
+        "Nan says: Eat your Shawarma and crush those boards! 🌯💪"
+    ];
+
+    function nextVibe() {
+        const display = document.getElementById('vibe-display');
+        display.style.opacity = 0;
+        setTimeout(() => {
+            display.innerText = vibes[Math.floor(Math.random() * vibes.length)];
+            display.style.opacity = 1;
+        }, 200);
+    }
+
+    function handleGlobalClick(e) {
+        if(e.pageY > window.innerHeight - 150) {
+            const items = ['🌸', '❤️', '🌼', '💖', '✨'];
+            const p = document.createElement('div');
+            p.className = 'floating-pop';
+            p.innerText = items[Math.floor(Math.random()*items.length)];
+            p.style.left = e.pageX + 'px';
+            p.style.top = e.pageY + 'px';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
+        }
+    }
+
+    let bCount = 0;
+    function countBunny() {
+        bCount++;
+        if(bCount >= 10) { document.getElementById('secret-overlay').style.display = 'block'; bCount = 0; }
+    }
+
+    function toggleMusic() {
+        const a = document.getElementById('lofi');
+        a.paused ? a.play() : a.pause();
+    }
+
+    setInterval(() => {
+        const s = document.createElement('div');
+        s.className = 'shawarma'; s.innerHTML = '🌯';
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 6000);
+    }, 600);
+</script>
+</body>
+</html>
